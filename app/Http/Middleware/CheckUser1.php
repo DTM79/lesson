@@ -14,14 +14,7 @@ class CheckUser1
      * @param  \Closure  $next
      * @return mixed
      */
-//    public function handle($request, Closure $next)
-//    {
-//        $offer = $request->route()->parameter('offer');
-//            if(Auth::user()->id == $offer['user_id']){
-//            return $next($request);
-//        }
-//        return redirect()->back();
-//    }
+
     public function handle($request, Closure $next)
     {
         $article = $request->route()->parameter('article');

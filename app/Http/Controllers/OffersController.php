@@ -20,14 +20,12 @@ class OffersController extends Controller
     }
     public function submit(OfferRequest $request)
     {
-
         $offer = new Offer();
         $offer->title = $request->input('title');
         $offer->description = $request->input('description');
         $offer->user_id = Auth::user()->id;
         $offer->price = $request->input('price');
         $offer->save();
-
         if($request->hasFile('images')) {
             $files = $request->file('images');
             $offerFileNames = '';
@@ -37,14 +35,12 @@ class OffersController extends Controller
             }
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-
                 $file->move(storage_path("app/$path"), $name);
                 $offerFileNames .= $name.',';
             }
             $offer->image = $offerFileNames;
             $offer->save();
         }
-
         return redirect()->route('offers');
     }
     public function edit(Offer $offer)
@@ -57,34 +53,31 @@ class OffersController extends Controller
         $offer->price = $request->input('price');
         $offer->description = $request->input('description');
         $offer->save();
-
         if($request->hasFile('images')) {
             $files = $request->file('images');
             $offerFileNames = '';
             $path = 'public/offerImg/' . $offer->id;
             if(!Storage::exists($path)) {
                 Storage::makeDirectory($path);
-            }else{
+            }
+            else{
                 Storage::deleteDirectory($path);
-
                 Storage::makeDirectory($path);
             }
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-
                 $file->move(storage_path("app/$path"), $name);
                 $offerFileNames .= $name.',';
             }
             $offer->image = $offerFileNames;
             $offer->save();
         }
-
         return redirect()->route('offers');
     }
     public function remove(Offer $offer)
     {
         $path = 'public/offerImg/' . $offer->id;
-        if(Storage::exists($path)) {
+        if(Storage::exists($path)){
             Storage::deleteDirectory($path);
         }
         $offer->delete();

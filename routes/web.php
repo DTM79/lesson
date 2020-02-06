@@ -23,6 +23,10 @@ Route::get('/offers/view/{offer}', 'OffersController@view')->name('offers-view')
 
 
 
+
+
+
+
 Route::get('/articles', 'ArticlesController@articles')->name('articles');
 Route::get('/articles/add', 'ArticlesController@add')->name('articles-add')->middleware('auth');
 Route::post('/articles/submit', 'ArticlesController@submit')->name('articles-submit')->middleware('auth');
@@ -36,3 +40,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/offers/search', 'OffersController@search')->name('search');
+

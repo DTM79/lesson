@@ -1,10 +1,9 @@
 @extends('layouts.main')
 @section('content')
     <main role="main">
-
         <div class="album py-5 bg-light mt-5">
             <div class="container">
-                <form action="{{route('articles-submit-edit', $article['id'])}}" method="post">
+                <form action="{{route('articles-submit-edit',$article['id'])}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="title">Title</label>

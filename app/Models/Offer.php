@@ -12,6 +12,10 @@ class Offer extends Model
     protected $table = 'offers';
     protected  $fillable = [];
 
+//    public static function where(string $string, string $string1, string $string2)
+//    {
+//    }
+
     public function getPreview()
     {
         $images = explode(',',$this->image );

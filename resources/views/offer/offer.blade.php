@@ -20,7 +20,6 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="jumbotron p-4 p-md-5 text-dark rounded bg-dark">
-
                             @foreach($offer->getAllImage() as $image)
                                 <div class="mb-5">
                                     <img src="{{asset('/storage/offerImg/'.$offer->id.'/'.$image)}}" width="100%">

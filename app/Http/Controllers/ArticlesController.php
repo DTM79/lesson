@@ -25,19 +25,21 @@ class ArticlesController extends Controller
         $article->description = $request->input('description');
         $article->user_id = Auth::user()->id;
         $article->save();
-
         if($request->hasFile('images')) {
             $files = $request->file('images');
+            $articleFileNames = '';
+            $path = 'public/articleImg/' . $article->id;
+            if(!Storage::exists($path)) {
+                Storage::makeDirectory($path);
+            }
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-                $path = 'public/articleImg/' . $article->id;
-                if(!Storage::exists($path)) {
-                    Storage::makeDirectory($path);
-                }
                 $file->move(storage_path("app/$path"), $name);
+                $articleFileNames .= $name.',';
             }
+            $article->image = $articleFileNames;
+            $article->save();
         }
-
         return redirect()->route('articles');
     }
     public function edit(Article $article)
@@ -49,32 +51,33 @@ class ArticlesController extends Controller
         $article->title = $request->input('title');
         $article->description = $request->input('description');
         $article->save();
-
         if($request->hasFile('images')) {
             $files = $request->file('images');
             $articleFileNames = '';
+            $path = 'public/articleImg/' . $article->id;
+            if(!Storage::exists($path)) {
+                Storage::makeDirectory($path);
+            }
+            else{
+                Storage::deleteDirectory($path);
+                Storage::makeDirectory($path);
+            }
             foreach ($files as $file) {
                 $name = $file->getClientOriginalName();
-                $path = 'public/articleImg/' . $article->id;
-                if (!Storage::exists($path)) {
-                    Storage::makeDirectory($path);
-                } else {
-                    Storage::deleteDirectory($path);
-
-                    Storage::makeDirectory($path);
-                }
                 $file->move(storage_path("app/$path"), $name);
-                $articleFileNames .= $name . ',';
+                $articleFileNames .= $name.',';
             }
             $article->image = $articleFileNames;
             $article->save();
-
         }
-            return redirect()->route('articles');
+        return redirect()->route('articles');
     }
-
     public function remove(Article $article)
     {
+        $path = 'public/articleImg/' . $article->id;
+        if (!Storage::exists($path)) {
+            Storage::deleteDirectory($path);
+        }
         $article->delete();
         return redirect ()->route ('articles');
     }
@@ -82,5 +85,11 @@ class ArticlesController extends Controller
     {
         return view('article/article', compact('article'));
     }
+//    public function search(Request $request)
+//    {
+//        $search = true;
+//        $articles = Article::where('title', 'like', '%'.$request->input('search').'%')->get();
+//        return view('article/articles', compact('articles', 'search'));
+//    }
 }
 
